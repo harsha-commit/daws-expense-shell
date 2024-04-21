@@ -16,9 +16,9 @@ W="\e[0m"
 VALIDATE(){
     if [ $? -ne 0 ]
     then
-        echo "$2...$R FAILED $W"
+        echo -e "$2...$R FAILED $W"
     else
-        echo "$2...$G SUCCESS $W"
+        echo -e "$2...$G SUCCESS $W"
     fi
 }
 
@@ -34,17 +34,17 @@ dnf list installed mysql-server &>> $LOGFILE
 
 if [ $? -eq 0 ]
 then
-    echo "MySQL Server package is already installed...$Y SKIPPED $W"
+    echo -e "MySQL Server package is already installed...$Y SKIPPED $W"
 else
     dnf install mysql-server -y &>> $LOGFILE
     # Validate if the package is correctly installed
     VALIDATE $? "Installing MySQL Server"
 fi
 
-systemctl enable mysqld
+systemctl enable mysqld &>> $LOGFILE
 VALIDATE $? "Enabling mysqld service"
 
-systemctl start mysqld
+systemctl start mysqld &>> $LOGFILE
 VALIDATE $? "Starting mysqld service"
 
 # mysql_secure_installation --set-root-pass ExpenseApp@1
