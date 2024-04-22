@@ -4,13 +4,17 @@ USERID=$(id -u)
 TIMESTAMP=$(date +%F-%H-%M-%S)
 SCRIPTNAME=$(echo $0 | cut -d '.' -f 1)
 LOGFILE="/tmp/$SCRIPTNAME-$TIMESTAMP.log"
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+W="\e[0m"
 
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
-        echo "$2 ... FAILED"
+        echo "$2 ...$R FAILED $W"
     else
-        echo "$2 ... SUCCESS"
+        echo "$2 ...$G SUCCESS $W"
     fi
 }
 
@@ -23,7 +27,7 @@ else
 fi
 
 dnf module disable nodejs -y &>> $LOGFILE
-VALIDATE $? "Disabling NodeJS"
+VALIDATE $? "Disabling default NodeJS"
 
 dnf module enable nodejs:20 -y &>> $LOGFILE
 VALIDATE $? "Enabling NodeJS:20"
@@ -31,12 +35,27 @@ VALIDATE $? "Enabling NodeJS:20"
 dnf install nodejs -y &>> $LOGFILE
 VALIDATE $? "Installing NodeJS:20"
 
-useradd expense &>> $LOGFILE
-VALIDATE $? "Adding User: expense"
+id expense &>> $LOGFILE
 
-# mkdir /app
-# curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
-# cd /app
-# unzip /tmp/backend.zip
-# npm install
+if [ $? -ne 0 ]
+then
+    echo "User expense is already present...$Y SKIPPED $W"
+else
+    useradd expense &>> $LOGFILE
+    VALIDATE $? "Adding User: expense"
+fi
+
+mkdir /app &>> $LOGFILE
+
+curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
+VALIDATE $? "Downloading Source Code"
+
+rm -r /app/*
+cd /app
+unzip /tmp/backend.zip
+VALIDATE $? "Unzipping the file"
+
+npm install
+VALIDATE $? "Installing npm dependencies"
+
 
