@@ -75,6 +75,7 @@ VALIDATE $? "Enabling Backend Service"
 dnf install mysql -y &>> $LOGFILE
 VALIDATE $? "Installing MySQL Client"
 
+# Here backend.sql makes this idempotent
 mysql -h db.harshadevops.site -uroot -p${mysql_root_password} < /app/schema/backend.sql &>> $LOGFILE
 VALIDATE $? "Loading DB Schema"
 
