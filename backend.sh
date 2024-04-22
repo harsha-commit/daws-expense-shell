@@ -52,7 +52,7 @@ VALIDATE $? "Downloading Source Code"
 
 rm -r /app/*
 cd /app
-unzip /tmp/backend.zip
+unzip /tmp/backend.zip &>> $LOGFILE
 VALIDATE $? "Unzipping the file"
 
 npm install &>> $LOGFILE
