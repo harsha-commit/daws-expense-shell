@@ -40,5 +40,8 @@ VALIDATE $? "Downloading Source Code"
 cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>> $LOGFILE
 
+cp /home/ec2-user/daws-expense-shell/expense.conf /etc/nginx/default.d/expense.conf
+VALIDATE $? "Downloading Frontend Configuration"
+
 systemctl restart nginx &>> $LOGFILE
 VALIDATE $? "Restarting Nginx"
