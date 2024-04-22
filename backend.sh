@@ -8,6 +8,8 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 W="\e[0m"
+echo "Enter MySQL DB Password:"
+read mysql_root_password # ExpenseApp@1
 
 VALIDATE(){
     if [ $1 -ne 0 ]
@@ -57,4 +59,25 @@ VALIDATE $? "Unzipping the file"
 
 npm install &>> $LOGFILE
 VALIDATE $? "Installing NodeJS dependencies"
+ 
+cp /home/ec2-user/daws-expense-shell/backend.service /etc/systemd/system/
+VALIDATE $? "Copying Backend Configuration"
+
+systemctl daemon-reload
+VALIDATE $? "Daemon Reload"
+
+systemctl start backend
+VALIDATE $? "Starting Backend Service"
+
+systemctl enable backend
+VALIDATE $? "Enabling Backend Service"
+
+dnf install mysql -y
+VALIDATE $? "Installing MySQL Client"
+
+mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p${mysql_root_password} < /app/schema/backend.sql
+VALIDATE $? "Loading DB Schema"
+
+systemctl restart backend
+VALIDATE $? "Restarting Backend Service"
 
