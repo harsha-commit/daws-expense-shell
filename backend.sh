@@ -12,9 +12,9 @@ W="\e[0m"
 VALIDATE(){
     if [ $1 -ne 0 ]
     then
-        echo "$2 ...$R FAILED $W"
+        echo -e "$2 ...$R FAILED $W"
     else
-        echo "$2 ...$G SUCCESS $W"
+        echo -e "$2 ...$G SUCCESS $W"
     fi
 }
 
@@ -47,7 +47,7 @@ fi
 
 mkdir /app &>> $LOGFILE
 
-curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
+curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip" &>> $LOGFILE
 VALIDATE $? "Downloading Source Code"
 
 rm -r /app/*
@@ -55,7 +55,7 @@ cd /app
 unzip /tmp/backend.zip
 VALIDATE $? "Unzipping the file"
 
-npm install
+npm install &>> $LOGFILE
 VALIDATE $? "Installing npm dependencies"
 
 
