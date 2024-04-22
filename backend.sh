@@ -45,7 +45,7 @@ else
     echo -e "User expense is already present...$Y SKIPPED $W"
 fi
 
-mkdir /app &>> $LOGFILE
+mkdir -p /app &>> $LOGFILE
 
 curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip" &>> $LOGFILE
 VALIDATE $? "Downloading Source Code"
@@ -56,6 +56,5 @@ unzip /tmp/backend.zip &>> $LOGFILE
 VALIDATE $? "Unzipping the file"
 
 npm install &>> $LOGFILE
-VALIDATE $? "Installing npm dependencies"
-
+VALIDATE $? "Installing NodeJS dependencies"
 
