@@ -10,9 +10,11 @@ R="\e[31m"
 G="\e[32m"
 Y="\e[33m"
 W="\e[0m"
+echo "Enter MySQL DB Password:"
+read -s mysql_root_password # ExpenseApp@1
 
 # Function to check if package is installed correctly, else quit
-# Because this can be re-used for other packages, it is made to a function
+# Because this can be re-used for other packages & commands, it is made to a function
 VALIDATE(){
     if [ $? -ne 0 ]
     then
@@ -47,4 +49,13 @@ VALIDATE $? "Enabling mysqld service"
 systemctl start mysqld &>> $LOGFILE
 VALIDATE $? "Starting mysqld service"
 
-# mysql_secure_installation --set-root-pass ExpenseApp@1
+# Checking if the password is already set
+mysql -h db.harshadevops.site -uroot -p${mysql_root_password} -e "show databases;" &>> $LOGFILE
+
+if [ $? -ne 0 ]
+then
+    mysql_secure_installation --set-root-pass ${mysql_root_password} &>> $LOGFILE
+    VALIDATE $? "Root Password Setup"
+else
+    echo -e "MySQL Server password already setup...$Y SKIPPED $W"
+fi
