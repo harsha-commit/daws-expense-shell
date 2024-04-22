@@ -75,7 +75,7 @@ VALIDATE $? "Enabling Backend Service"
 dnf install mysql -y
 VALIDATE $? "Installing MySQL Client"
 
-mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p${mysql_root_password} < /app/schema/backend.sql
+mysql -h db.harshadevops.site -uroot -p${mysql_root_password} < /app/schema/backend.sql
 VALIDATE $? "Loading DB Schema"
 
 systemctl restart backend
