@@ -44,10 +44,10 @@ else
 fi
 
 systemctl enable mysqld &>> $LOGFILE
-VALIDATE $? "Enabling mysqld service"
+VALIDATE $? "Enabling MySQL Server"
 
 systemctl start mysqld &>> $LOGFILE
-VALIDATE $? "Starting mysqld service"
+VALIDATE $? "Starting MySQL Server"
 
 # Checking if the password is already set
 mysql -h db.harshadevops.site -uroot -p${mysql_root_password} -e "show databases;" &>> $LOGFILE
