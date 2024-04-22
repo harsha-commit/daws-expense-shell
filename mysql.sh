@@ -11,7 +11,7 @@ G="\e[32m"
 Y="\e[33m"
 W="\e[0m"
 echo "Enter MySQL DB Password:"
-read mysql_root_password # ExpenseApp@1
+read -s mysql_root_password # ExpenseApp@1
 
 # Function to check if package is installed correctly, else quit
 # Because this can be re-used for other packages & commands, it is made to a function
