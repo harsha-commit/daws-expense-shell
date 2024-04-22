@@ -39,10 +39,10 @@ id expense &>> $LOGFILE
 
 if [ $? -ne 0 ]
 then
-    echo "User expense is already present...$Y SKIPPED $W"
-else
     useradd expense &>> $LOGFILE
     VALIDATE $? "Adding User: expense"
+else
+    echo -e "User expense is already present...$Y SKIPPED $W"
 fi
 
 mkdir /app &>> $LOGFILE
