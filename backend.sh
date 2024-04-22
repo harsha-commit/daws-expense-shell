@@ -33,9 +33,9 @@ VALIDATE $? "Installing NodeJS:20"
 useradd expense &>> $LOGFILE
 VALIDATE $? "Adding User: expense"
 
-mkdir /app
-curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
-cd /app
-unzip /tmp/backend.zip
-npm install
+# mkdir /app
+# curl -o /tmp/backend.zip "https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip"
+# cd /app
+# unzip /tmp/backend.zip
+# npm install
 
