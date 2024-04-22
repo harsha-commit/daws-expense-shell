@@ -59,25 +59,25 @@ VALIDATE $? "Unzipping the file"
 
 npm install &>> $LOGFILE
 VALIDATE $? "Installing NodeJS dependencies"
- 
-cp /home/ec2-user/daws-expense-shell/backend.service /etc/systemd/system/
+
+cp /home/ec2-user/daws-expense-shell/backend.service /etc/systemd/system/ &>> $LOGFILE
 VALIDATE $? "Copying Backend Configuration"
 
-systemctl daemon-reload
+systemctl daemon-reload &>> $LOGFILE
 VALIDATE $? "Daemon Reload"
 
-systemctl start backend
+systemctl start backend &>> $LOGFILE
 VALIDATE $? "Starting Backend Service"
 
-systemctl enable backend
+systemctl enable backend &>> $LOGFILE
 VALIDATE $? "Enabling Backend Service"
 
-dnf install mysql -y
+dnf install mysql -y &>> $LOGFILE
 VALIDATE $? "Installing MySQL Client"
 
-mysql -h db.harshadevops.site -uroot -p${mysql_root_password} < /app/schema/backend.sql
+mysql -h db.harshadevops.site -uroot -p${mysql_root_password} < /app/schema/backend.sql &>> $LOGFILE
 VALIDATE $? "Loading DB Schema"
 
-systemctl restart backend
+systemctl restart backend &>> $LOGFILE
 VALIDATE $? "Restarting Backend Service"
 
